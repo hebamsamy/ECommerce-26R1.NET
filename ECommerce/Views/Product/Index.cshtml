@@ -1,9 +1,51 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model List<Product>
 @{
+}
+@section Styles {
+    <style>
+        .bbttnn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 }
 
 
+<a asp-action= "add" asp-controller="product" class="bbttnn">Add New Product</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th colspan="2">action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price</td>
+                <td>@product.Quantity</td>
+                <td>@product.Category?.Name</td>
+                <td><a asp-action="Details" asp-route-id="@product.Id"> See Details</a></td>
+                <td><a asp-action="Delete" asp-route-id="@product.Id"> Delete</a></td>
+            </tr>
+        }
+</table>
 
 <h1>Testing Product Controller</h1>

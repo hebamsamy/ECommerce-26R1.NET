@@ -21,7 +21,7 @@ namespace ECommerce.Repositories
         }
 
         public IQueryable<TEntity> Get(
-            Expression<Func<TEntity, bool>> expression,
+            Expression<Func<TEntity, bool>> expression = null,
             int PageSize = 10, int PageNumer = 1)
         {
             IQueryable<TEntity>  Data = expression== null 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Models
 {
+    //is - a
     public class Supplier 
     {
         public int UserId { get; set; }

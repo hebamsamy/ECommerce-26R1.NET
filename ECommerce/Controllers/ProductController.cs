@@ -1,14 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ECommerce.DTOs;
+using ECommerce.Models;
+using ECommerce.Repositories;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ECommerce.Controllers
 {
     //MVC
     public class ProductController : Controller
     {
+        private ProductRepository productRepository;
+        private CategoryRepesitory CategoryRepesitory;
+        public ProductController()
+        {
+            var context = new EcommerceContext();
+            CategoryRepesitory = new CategoryRepesitory(context);
+            productRepository = new ProductRepository(context);
+        }
         //[HttpGet]
         public IActionResult Index()
         {
-            return View();
+            var data = productRepository.Get().ToList();
+            return View(data);
+            //pasing by model
         }
 
         public IActionResult Details(int id)
@@ -16,21 +31,94 @@ namespace ECommerce.Controllers
             if (id > 0)
             {
 
-                return View("card", id);
+                var  data =  productRepository.Get(p => p.Id == id).FirstOrDefault();
+                return View(data);
             }
             return RedirectToAction("index");
         }
 
-        //[HttpGet]
-        //public IActionResult Add() { 
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult Add()
+        {
 
-        //[HttpPost]
-        //public IActionResult Add(ProductDTO data) {
+            ViewData["Categories"] = GetCatagories();
+            return View();
+        }
 
-        //    ////save to database
-        //    //return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        public IActionResult Add(ProductDTO data)
+        {
+            //MAPP
+            if (ModelState.IsValid) {
+
+                data.ImageUrls = new List<string>();
+                foreach (FormFile file in data.Images)
+                {
+                    if (file.Length > 0)
+                    {
+                        FileStream fileStream = new FileStream(
+                            Path.Combine(Directory.GetCurrentDirectory(),
+                            "wwwroot","Images","Products",file.FileName
+                            ), FileMode.Create);
+
+                        file.CopyTo(fileStream);
+                        fileStream.Close();
+
+                        data.ImageUrls.Add($"/Images/Products/{file.FileName}");
+
+                    }
+
+                }
+
+
+                Product product = new Product()
+                {
+                    Name = data.Name,
+                    Price = data.Price,
+                    Quantity = data.Quantity,
+                    Description = data.Description,
+                    ExpireDate = data.ExpireDate,
+                    CategoryId = data.CategoryId,
+                    SupplierId = data.SupplierId,
+                    PublishDate = DateTime.Now,
+                    ProductImages = data.ImageUrls
+                    .Select(url => new ProductImage { ImageUrl = url }).ToList()
+                };
+                ////save to database
+                productRepository.Add(product);
+                productRepository.UnitofWork();
+            }
+            else
+            {
+                ViewData["Categories"] = GetCatagories();
+
+                return View();
+            }
+            return RedirectToAction("Index");
+        }
+
+        
+
+
+
+        public IActionResult Delete(int id)
+        {
+            var product = productRepository.Get(p => p.Id == id).FirstOrDefault();
+            productRepository.Delete(product);
+            productRepository.UnitofWork();
+            return RedirectToAction("Index");
+        }
+        private List<SelectListItem> GetCatagories()
+        {
+            List<SelectListItem> options = CategoryRepesitory.Get()
+               .Select(c => new SelectListItem()
+               {
+                   Text = c.Name,
+                   Value = c.Id.ToString()
+               }).ToList();
+
+            
+           return options;
+        }
     }
 }
