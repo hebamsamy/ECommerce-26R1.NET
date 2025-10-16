@@ -1,3 +1,7 @@
+using ECommerce.Models;
+using ECommerce.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace ECommerce
 {
     public class Program
@@ -8,9 +12,34 @@ namespace ECommerce
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
             //Work as API
             //builder.Services.AddControllers();
+
+
+
+
+            #region IOC / DI Container
+            //life time
+            //Configuration Object 
+            //builder.Services.AddSingleton
+            //DbContext Object
+            //Per Request
+            //builder.Services.AddScoped
+            //Per use/ call
+            //builder.Services.AddTransient
+            builder.Services.AddDbContext<EcommerceContext>(
+                i => i.UseLazyLoadingProxies()
+                .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+                ));
+
+            builder.Services.AddScoped(typeof(ProductRepository));
+            builder.Services.AddScoped(typeof(CategoryRepesitory)); 
+            #endregion
+
+
+
+
+            
             var app = builder.Build();
 
             
@@ -25,6 +54,13 @@ namespace ECommerce
                 pattern: "{controller=Home}/{action=index}/{id?}")
                 .WithStaticAssets();
 
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //      name: "areas",
+            //      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            //    );
+            //});
 
             app.Run();
 

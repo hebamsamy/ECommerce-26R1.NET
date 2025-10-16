@@ -42,8 +42,8 @@
                 <td>@product.Price</td>
                 <td>@product.Quantity</td>
                 <td>@product.Category?.Name</td>
-                <td><a asp-action="Details" asp-route-id="@product.Id"> See Details</a></td>
-                <td><a asp-action="Delete" asp-route-id="@product.Id"> Delete</a></td>
+                <td><a asp-action="Details" asp-route-id="@product.Id" asp-fragment="last"> See Details</a></td>
+                <td><a asp-action="Delete" asp-route-id="@product.Id" > Delete</a></td>
             </tr>
         }
 </table>

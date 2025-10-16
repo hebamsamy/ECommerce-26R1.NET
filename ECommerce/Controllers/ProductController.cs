@@ -12,11 +12,10 @@ namespace ECommerce.Controllers
     {
         private ProductRepository productRepository;
         private CategoryRepesitory CategoryRepesitory;
-        public ProductController()
+        public ProductController(ProductRepository _productRepository, CategoryRepesitory _CategoryRepesitory)
         {
-            var context = new EcommerceContext();
-            CategoryRepesitory = new CategoryRepesitory(context);
-            productRepository = new ProductRepository(context);
+            CategoryRepesitory = _CategoryRepesitory;
+            productRepository = _productRepository;
         }
         //[HttpGet]
         public IActionResult Index()
@@ -40,8 +39,12 @@ namespace ECommerce.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            //no casting
+            ViewBag.Date = DateTime.Now.ToString("yyyy-MM-dd");
 
+            //casting
             ViewData["Categories"] = GetCatagories();
+            //TempData["teet"] = 1;
             return View();
         }
 

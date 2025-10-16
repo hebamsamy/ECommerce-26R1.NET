@@ -18,6 +18,8 @@
     List<SelectListItem> categories = ViewData["Categories"] as List<SelectListItem>;
 }
 
+<h1>Add New Product</h1>
+<h3>Current Date : @ViewBag.Date </h3>
 <form asp-action="add" asp-controller="Product" method="post" enctype="multipart/form-data">
     <div class="mb-3">
         <label asp-for="Name"  class="form-label"></label>

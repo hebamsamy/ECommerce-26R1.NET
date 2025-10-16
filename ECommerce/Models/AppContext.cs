@@ -10,6 +10,9 @@ namespace ECommerce.Models
     public class EcommerceContext: DbContext
     {
 
+        public EcommerceContext(DbContextOptions<EcommerceContext> options) : base(options)
+        {
+        }
         //tables
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
@@ -22,11 +25,11 @@ namespace ECommerce.Models
 
         // configuration
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Data source = .; Initial catalog = Ecommerce ; Integrated security= true; trustservercertificate = true;MultipleActiveResultSets=True");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    //base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseLazyLoadingProxies().UseSqlServer("");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
