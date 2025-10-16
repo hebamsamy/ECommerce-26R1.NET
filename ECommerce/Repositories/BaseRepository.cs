@@ -20,6 +20,10 @@ namespace ECommerce.Repositories
             Table = context.Set<TEntity>();
         }
 
+        public IQueryable<TEntity> GetAll()
+        {
+            return Table.AsQueryable();
+        }
         public IQueryable<TEntity> Get(
             Expression<Func<TEntity, bool>> expression = null,
             int PageSize = 10, int PageNumer = 1)

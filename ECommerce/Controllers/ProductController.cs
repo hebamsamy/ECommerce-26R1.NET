@@ -17,10 +17,14 @@ namespace ECommerce.Controllers
             CategoryRepesitory = _CategoryRepesitory;
             productRepository = _productRepository;
         }
-        //[HttpGet]
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(
+            string SearchText = "", decimal Price = 0, int CategoryId = 0,
+            string ShopName = "", int PageSize = 3, int PageNumber = 1
+            )
         {
-            var data = productRepository.Get().ToList();
+            ViewData["Categories"] = GetCatagories();
+            var data = productRepository.Search(SearchText, Price, CategoryId, ShopName,PageSize, PageNumber);
             return View(data);
             //pasing by model
         }
