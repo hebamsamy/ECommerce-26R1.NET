@@ -4,7 +4,7 @@
 @{
 
 }
-@model Product;
+@model ProductDetailsDTO;
 
 
 
@@ -12,9 +12,11 @@
 
 
 <div>
-    @foreach(var image in Model.ProductImages)
-    {
-        <img  src="@image.ImageUrl"/>
+    @if (Model.ProductImages != null && Model.ProductImages.Count > 0){
+        @foreach(var image in Model.ProductImages)
+        {
+            <img  src="@image"/>
+        }
     }
     <h2>@Model.Name</h2>
     <p>@Model.Description</p>
@@ -36,9 +38,9 @@
    
     <span quantity="@Model.Quantity"></span>
 
-    <p>Category: @Model.Category?.Name</p>
-    <p>Supplier: @Model.Supplier?.User.Name</p>
-    <p>Shop Name: @Model.Supplier?.ShopName</p>
+    <p>Category: @Model.CategoryName</p>
+    <p>Supplier: @Model.SupplierName</p>
+    <p>Shop Name: @Model.ShopName</p>
 
 
     @* <form asp-action="AddToCart" method="post">
@@ -53,4 +55,8 @@
     <div style="margin-bottom:200px"></div>
 
 
-    @* <div id="last"></div> *@
+    @* <vc:releted-product category-id="@Model.CategoryId"></vc:releted-product> *@
+    <vc:releted-product supplier-id="@Model.SupplierId"></vc:releted-product>
+
+
+

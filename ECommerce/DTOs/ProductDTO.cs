@@ -3,7 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.DTOs
 {
-    public class ProductDTO
+    //Create a DTO for adding a new product with the following properties:
+    //AddProductDTO:
+    //ProductCreationDTO
+
+    public class ProductCreationDTO
     {
         [Required , StringLength (100, MinimumLength = 3)]
         public string Name { get; set; }

@@ -16,7 +16,7 @@ namespace ECommerce.Repositories
         {
         }
 
-        public PaginationDTO<Product> Search(
+        public PaginationDTO<ProductDetailsDTO> Search(
             string SearchText = "", decimal Price = 0, int CategoryId = 0,
             string ShopName = "", int PageSize = 3, int PageNumber = 1
             )
@@ -54,12 +54,12 @@ namespace ECommerce.Repositories
                 filteretion== null? 
                 GetAll().Count(): GetAll().Where(filteretion).Count();
 
-            return new PaginationDTO<Product>()
+            return new PaginationDTO<ProductDetailsDTO>()
             {
                 PageNumber = PageNumber,
                 PageSize = PageSize,
                 Count = totelCountAfterFilteration ,
-                List = data.ToList()
+                List = data.Select(p=>p.ToDTO()).ToList()
             };
 
 

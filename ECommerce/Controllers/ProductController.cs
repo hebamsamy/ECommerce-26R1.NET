@@ -3,7 +3,6 @@ using ECommerce.Models;
 using ECommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ECommerce.Controllers
 {
@@ -33,9 +32,13 @@ namespace ECommerce.Controllers
         {
             if (id > 0)
             {
+                var data = productRepository.Get(p => p.Id == id).Select(p=> p.ToDTO()).FirstOrDefault();
 
-                var  data =  productRepository.Get(p => p.Id == id).FirstOrDefault();
+
+
+
                 return View(data);
+
             }
             return RedirectToAction("index");
         }
@@ -53,7 +56,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(ProductDTO data)
+        public IActionResult Add(ProductCreationDTO data)
         {
             //MAPP
             if (ModelState.IsValid) {

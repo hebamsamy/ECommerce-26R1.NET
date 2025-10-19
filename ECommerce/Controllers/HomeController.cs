@@ -1,21 +1,24 @@
-using System.Diagnostics;
+using ECommerce.DTOs;
 using ECommerce.Models;
+using ECommerce.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ECommerce.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ProductRepository ProductRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ProductRepository _repo)
         {
-            _logger = logger;
+            ProductRepository = _repo;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var products = ProductRepository.GetAll().Select(p => p.ToDTO()).ToList();
+            return View(products);
         }
 
         public IActionResult Privacy()

@@ -1,10 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model PaginationDTO<Product>
+﻿@model PaginationDTO<ProductDetailsDTO>
 @{
-    var catagories = ViewData["Categories"] as List<SelectListItem>;
-    // c = 6  // pN = 1  
+    var catagories = ViewData["Categories"] as List<SelectListItem>; 
     bool canMoveNext = Model.Count >= (Model.PageSize * Model.PageNumber);
     bool canMovePrev = Model.PageNumber > 1;
 }
@@ -68,9 +64,9 @@
                 <td>@product.Description</td>
                 <td>@product.Price</td>
                 <td>@product.Quantity</td>
-                <td>@product.Category?.Name</td>
-                <td><a asp-action="Details" asp-route-id="@product.Id" asp-fragment="last"> See Details</a></td>
-                <td><a asp-action="Delete" asp-route-id="@product.Id" > Delete</a></td>
+                <td>@product.CategoryName</td>
+                <td><a asp-action="Details" asp-route-id="@product.Id"> See Details</a></td>
+                <td><a asp-action="Delete" asp-route-id="@product.Id"> Delete</a></td>
             </tr>
         }
 </table>
