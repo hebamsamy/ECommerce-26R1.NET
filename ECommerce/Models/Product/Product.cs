@@ -16,7 +16,7 @@ namespace ECommerce.Models
         public DateTime PublishDate { get; set; }
         public DateTime ExpireDate { get; set; }
         public int CategoryId { get; set; }
-        public int SupplierId { get; set; }
+        public string SupplierId { get; set; }
 
         // navigation property
         public virtual Category Category { get; set; }

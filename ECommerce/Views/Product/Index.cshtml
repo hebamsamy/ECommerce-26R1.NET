@@ -1,4 +1,5 @@
-﻿@model PaginationDTO<ProductDetailsDTO>
+﻿@using ECommerce.DTOs
+@model PaginationDTO<ProductDetailsDTO>
 @{
     var catagories = ViewData["Categories"] as List<SelectListItem>; 
     bool canMoveNext = Model.Count >= (Model.PageSize * Model.PageNumber);

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Models
 {
-    public class EcommerceContext: DbContext
+    public class EcommerceContext: IdentityDbContext<User>
     {
 
         public EcommerceContext(DbContextOptions<EcommerceContext> options) : base(options)
@@ -49,9 +50,9 @@ namespace ECommerce.Models
 
             // Data Seeding
             modelBuilder.SeedCategory();
-            modelBuilder.SeedUser();
-            modelBuilder.SeedSupplier();    
-            modelBuilder.SeedProduct();
+            modelBuilder.SeedRole();
+            //modelBuilder.SeedSupplier();    
+            //modelBuilder.SeedProduct();
 
         }
 

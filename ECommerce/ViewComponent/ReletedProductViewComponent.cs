@@ -13,7 +13,7 @@ namespace ECommerce
         {
             ProductRepository = _repo;
         }
-        public IViewComponentResult Invoke(int categoryId = 0, int supplierId = 0)
+        public IViewComponentResult Invoke(int categoryId = 0, string supplierId = "")
         {
             if (categoryId > 0)
             {
@@ -22,7 +22,7 @@ namespace ECommerce
                 return View(products);
                 
             }
-            else if (supplierId > 0)
+            else if (string.IsNullOrEmpty(supplierId))
             {
                 ViewBag.Title = "Related Products By Supplier";
                 var products = ProductRepository.Get(p => p.SupplierId == supplierId).Take(3).Select(p => p.ToDTO()).ToList();

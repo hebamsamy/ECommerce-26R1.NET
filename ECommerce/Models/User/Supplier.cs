@@ -9,7 +9,7 @@ namespace ECommerce.Models
     //is - a
     public class Supplier 
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual User User { get; set; }
         public string ShopName { get; set; }
         public string ShopLocation { get; set; }

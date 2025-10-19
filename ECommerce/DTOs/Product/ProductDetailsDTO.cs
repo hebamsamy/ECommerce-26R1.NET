@@ -10,7 +10,7 @@
         public DateTime ExpireDate { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int SupplierId { get; set; }
+        public string SupplierId { get; set; }
         public string SupplierName { get; set; }
         public string ShopName { get; set; }
         public List<string>? ProductImages { get; set; } = null;

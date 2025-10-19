@@ -14,7 +14,7 @@ namespace ECommerce.Models
 
         public OrderStatus Status { get; set; }
         public Address ShippingAddress { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<OrderItem> Items { get; set; }
     }

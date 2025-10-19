@@ -9,7 +9,7 @@ namespace ECommerce.Models
 {
     public class CartItem :BaseModel
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         //[NotMapped]

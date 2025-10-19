@@ -1,5 +1,6 @@
 using ECommerce.Models;
 using ECommerce.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce
@@ -32,6 +33,9 @@ namespace ECommerce
                 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
 
+            builder.Services.AddIdentity<User,IdentityRole>()
+                .AddEntityFrameworkStores<EcommerceContext>();
+
             builder.Services.AddScoped(typeof(ProductRepository));
             builder.Services.AddScoped(typeof(CategoryRepesitory)); 
             #endregion
@@ -47,7 +51,11 @@ namespace ECommerce
             app.UseRouting();
 
 
+
             app.MapStaticAssets();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

@@ -24,7 +24,7 @@ namespace ECommerce.DTOs
         [Display(Name= "Select Category")]
         public int CategoryId { get; set; }
 
-        public int SupplierId { get; set; } = 3;
+        public string SupplierId { get; set; }
 
         public IFormFileCollection? Images { get; set; } = null;
 

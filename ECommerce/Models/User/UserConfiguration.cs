@@ -12,13 +12,8 @@ namespace ECommerce.Models
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.ToTable("User", "Security");
-            builder.HasKey(u => u.Id);
-            builder.HasIndex(u => u.Email).IsUnique();
-            builder.Property(u => u.Email).HasMaxLength(200).IsRequired();
-            builder.Property(u => u.PhoneNumber).HasMaxLength(11).IsRequired(false);
             builder.Property(u => u.CreatedAt).HasDefaultValueSql("GetDate()");
-            builder.Property(u => u.Name).HasMaxLength(100).IsRequired();
+            builder.Property(u => u.FullName).HasMaxLength(100).IsRequired();
             builder.OwnsOne(o => o.Address, o =>
             {
                 o.Property(p => p.Street).HasMaxLength(100).IsRequired(false);
@@ -26,7 +21,6 @@ namespace ECommerce.Models
                 o.Property(p => p.Notes).HasMaxLength(200).IsRequired(false); ;
                 o.Property(p => p.ZIPCode).HasMaxLength(10).IsRequired(false); ;
             });
-            builder.HasQueryFilter(p => p.IsDeleted == false);
         }
     }
 }
