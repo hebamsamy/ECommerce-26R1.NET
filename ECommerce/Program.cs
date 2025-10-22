@@ -33,17 +33,28 @@ namespace ECommerce
                 .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
 
-            builder.Services.AddIdentity<User,IdentityRole>()
+            builder.Services.AddIdentity<User, IdentityRole>(i =>
+            {
+                i.Password.RequireNonAlphanumeric = false;
+                i.Password.RequireUppercase = false;
+                i.Password.RequireLowercase = false;
+                i.Password.RequiredLength = 8;
+                i.User.RequireUniqueEmail = true;
+                i.Lockout.MaxFailedAccessAttempts = 3;
+                i.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+            })
                 .AddEntityFrameworkStores<EcommerceContext>();
 
+            //builder.Services.AddScoped<Iuuuuu, hhhhh>();
             builder.Services.AddScoped(typeof(ProductRepository));
             builder.Services.AddScoped(typeof(CategoryRepesitory)); 
+            builder.Services.AddScoped(typeof(RoleRepository));
             #endregion
 
 
 
 
-            
+
             var app = builder.Build();
 
             

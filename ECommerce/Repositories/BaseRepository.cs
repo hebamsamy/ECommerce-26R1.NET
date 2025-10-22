@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Repositories
 {
-    public class BaseRepository <TEntity> where TEntity : BaseModel
+    public class BaseRepository <TEntity> where TEntity : class
     {
         private DbSet<TEntity> Table;
         private EcommerceContext context;
