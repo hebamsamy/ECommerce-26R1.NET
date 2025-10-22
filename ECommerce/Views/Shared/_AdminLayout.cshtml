@@ -1,7 +1,5 @@
 ﻿@{
-    var data = User.Identity.Name;
-
-    var test = User.Identity;
+    
 }
 
 
@@ -72,11 +70,21 @@
 
     <div class="col-md-9 col-lg-10 ml-md-auto px-0 ms-md-auto">
         <!-- top nav -->
+
+        @if (User.Identity!=null && User.Identity.IsAuthenticated)
+        {
+            <span>Hello, @User.FindFirst(ClaimTypes.Name).Value </span>
+            <a asp-controller="Account" asp-action="SignOut">SignOut</a>
+        }else{
         
+            <a class="btn btn-info" asp-action="login" asp-controller="Account">Login</a>
+            <a class="btn btn-primary" asp-action="Register" asp-controller="Account">Register</a>
+
+        }
 
         <!-- main content -->
         <main class="p-4 min-vh-100">
-            @RenderBody();
+            @RenderBody()
         </main>
     </div>
     @* @RenderSection ("Scripts", required: false); *@

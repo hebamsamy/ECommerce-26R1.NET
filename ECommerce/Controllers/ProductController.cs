@@ -1,12 +1,16 @@
 ﻿using ECommerce.DTOs;
 using ECommerce.Models;
 using ECommerce.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ECommerce.Controllers
 {
     //MVC
+
+    [Authorize (Roles ="Admin,Supplier")]
     public class ProductController : Controller
     {
         private ProductRepository productRepository;
@@ -44,6 +48,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpGet]
+        [Authorize (Roles ="Supplier")]
         public IActionResult Add()
         {
             //no casting
@@ -56,8 +61,10 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Supplier")]
         public IActionResult Add(ProductCreationDTO data)
         {
+            data.SupplierId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //MAPP
             if (ModelState.IsValid) {
 

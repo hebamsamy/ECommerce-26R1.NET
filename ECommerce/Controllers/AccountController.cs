@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace ECommerce.Controllers
 {
@@ -13,15 +14,18 @@ namespace ECommerce.Controllers
         private readonly UserManager<User> UserManager;
         private readonly SignInManager<User> SignInManager;
         private readonly RoleRepository RoleRepository;
+        private readonly SupplierRepository SupplierRepository;
 
         public AccountController(
             UserManager<User> userManager,
             RoleRepository roleRepository,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            SupplierRepository supplierRepository)
         {
             UserManager = userManager;
             RoleRepository = roleRepository;
             SignInManager = signInManager;
+            SupplierRepository = supplierRepository;
         }
         [HttpGet]
         public IActionResult Login()
@@ -35,23 +39,27 @@ namespace ECommerce.Controllers
             if (ModelState.IsValid)
             {
                 //search for user by user name or email
-                var User = await UserManager.FindByNameAsync(user.Text);
+                var ExitstingUser = await UserManager.FindByNameAsync(user.Text);
                 //found User By Username
-                if (User == null)
+                if (ExitstingUser == null)
                 {
                     //found User By Email
 
-                   User = await UserManager.FindByEmailAsync(user.Text);
+                    ExitstingUser = await UserManager.FindByEmailAsync(user.Text);
                 }
-                if(User == null)
+                if(ExitstingUser == null)
                 {
                     ModelState.AddModelError("", "Sorry Register First or Ensure Of Account Inforamtion");
                     return View();
                 }
-                var SignInResult = await SignInManager.PasswordSignInAsync(User, user.Password, user.RememberMe, lockoutOnFailure: true);
+                var SignInResult = await SignInManager.PasswordSignInAsync(ExitstingUser, user.Password, user.RememberMe, lockoutOnFailure: true);
 
                 if (SignInResult.Succeeded)
                 {
+                    var t =  await UserManager.AddClaimAsync(ExitstingUser, new Claim(ClaimTypes.GivenName, ExitstingUser.FullName));
+
+
+                    var claims = User.Claims;
                     /////////////////////////////////////
                     return RedirectToAction("Index", "Home");
                 }
@@ -97,6 +105,19 @@ namespace ECommerce.Controllers
                 if (res.Succeeded)
                 {
                     await UserManager.AddToRoleAsync(userModel, user.Role);
+
+                    if (user.Role == "Supplier")
+                    {
+                        //
+                        SupplierRepository.Add(new Supplier
+                        {
+                            //UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                            UserId = userModel.Id,
+                            ShopName = $"{user.FullName}'s Shop"
+                        });
+                        SupplierRepository.UnitofWork();
+                    }
+
                     return RedirectToAction("Login");
                 }
                 else
@@ -113,6 +134,11 @@ namespace ECommerce.Controllers
         }
 
 
+        public async Task<IActionResult> SignOut()
+        {
+            await SignInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
 
         private List<SelectListItem> GetAllRolea()
         {

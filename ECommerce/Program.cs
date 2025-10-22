@@ -49,6 +49,7 @@ namespace ECommerce
             builder.Services.AddScoped(typeof(ProductRepository));
             builder.Services.AddScoped(typeof(CategoryRepesitory)); 
             builder.Services.AddScoped(typeof(RoleRepository));
+            builder.Services.AddScoped(typeof(SupplierRepository));
             #endregion
 
 
